@@ -10,12 +10,10 @@ spark = SparkSession.builder \
 ssc = StreamingContext(spark.sparkContext, 5)
 
 # Create a DStream that fetches data from the API
-data_stream = ssc.socketTextStream("wss://ws-feed.exchange.coinbase.com", 9999)
+data_stream = ssc.socketTextStream("fix-public.sandbox.exchange.coinbase.com", 4198)
 
 # Split the lines into words and count the frequency of each word
-word_counts = data_stream.flatMap(lambda line: line.split(" ")) \
-                   .map(lambda word: (word, 1)) \
-                   .reduceByKey(lambda a, b: a + b)
+word_counts = data_stream.flatMap(lambda line: line.split(" ")).pprint()
 
 # Print the first 10 word counts
 word_counts.pprint(10)
